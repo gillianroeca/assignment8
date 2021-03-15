@@ -6,7 +6,7 @@
 <style type="text/css"> 
 
 	.selectt{
-		display: none;
+		display: none; 
 	}
 
 	.error{
@@ -49,7 +49,7 @@ function makeSelect(name, minRange, maxRange)
 	return t;
 }
 
-function isNumeric(x)
+function isNumeric(x) //uses built in isNaN() function to return if a an input is a number or not
 {
 	if (isNaN(x))
 	{
@@ -58,13 +58,13 @@ function isNumeric(x)
 	return true;
 }
 
-function myTime()
+function myTime() //to get the user's currrent time from computer. rerferenced - plus2net.com/javascript_tutorial/clock.php
 {
-	var x = new Date()
-	var ampm = x.getHours( ) >= 12 ? ' PM' : ' AM';
-	hours = x.getHours( ) % 12;
+	var x = new Date() //date function pulls current date/time 
+	var ampm = x.getHours( ) >= 12 ? ' PM' : ' AM'; //AM and PM time
+	hours = x.getHours( ) % 12; //12 hours not military time
 	hours = hours ? hours : 12;
-	hours=hours.toString().length==1? 0+hours.toString() : hours;
+	hours=hours.toString().length==1? 0+hours.toString() : hours; //add 0 when singe digit
 
 	var minutes=x.getMinutes().toString()
 	minutes=minutes.length==1 ? 0+minutes : minutes;
@@ -78,11 +78,11 @@ function myTime()
 	var dt=x.getDate().toString();
 	dt=dt.length==1 ? 0+dt : dt;
 
-	var x1=month + "/" + dt + "/" + x.getFullYear(); 
-	return x1 = x1 + " - " +  hours + ":" +  minutes + ":" +  seconds + " " + ampm;
+	var x1=month + "/" + dt + "/" + x.getFullYear(); //mm/dd/yyyy format 
+	return x1 = x1 + " - " +  hours + ":" +  minutes + ":" +  seconds + " " + ampm; //time
 }
 
-function pickupTime()
+function pickupTime() //current time from above + 15 min to get pickup time
 {
 	var x = new Date()
 	var ampm = x.getHours( ) >= 12 ? ' PM' : ' AM';
@@ -90,8 +90,8 @@ function pickupTime()
 	hours = hours ? hours : 12;
 	hours=hours.toString().length==1? 0+hours.toString() : hours;
 
-	var minutes=(x.getMinutes()+15).toString();
-		if (minutes>=60)
+	var minutes=(x.getMinutes()+15).toString(); //adds the 15 mins to current time 
+		if (minutes>=60) //rounds minutes to hours once gets past 60
 		{
 			hours++;
 			minutes = minutes - 60;
@@ -103,7 +103,7 @@ function pickupTime()
 
 	var x1 = 0;
 
-	return x1 =  hours + ":" +  minutes + ":" +  seconds + " " + ampm;
+	return x1 =  hours + ":" +  minutes + ":" +  seconds + " " + ampm; //only time is returned
 }
 
 function delivTime()
@@ -114,8 +114,8 @@ function delivTime()
 	hours = hours ? hours : 12;
 	hours=hours.toString().length==1? 0+hours.toString() : hours;
 
-	var minutes=(x.getMinutes()+30).toString();
-		if (minutes>=60)
+	var minutes=(x.getMinutes()+30).toString(); //adds the 30 minsh to current time
+		if (minutes>=60) //rounds minutes ot hours once gets past 60
 		{
 			hours++;
 			minutes = minutes - 60;
@@ -127,7 +127,7 @@ function delivTime()
 
 	var x1 = 0;
 
-	return x1 =  hours + ":" +  minutes + ":" +  seconds + " " + ampm;
+	return x1 =  hours + ":" +  minutes + ":" +  seconds + " " + ampm; //time returned 
 }
 
 
@@ -139,7 +139,10 @@ function delivTime()
 <p>First Name: <input type="text"  name='fname' /></p>
 <p>Last Name*:  <input type="text"  name='lname' /></p> 
 	<div id="nameError" class="error">Last name is required  </div> 
+	<!--- validation/errors are new objects displayed on window, not alerts --->
 
+<!--- made into divs with css class so it is hidden unless delivery value is selected.
+kept <p> so that it is inline with the other objects  --->
 <p><div class="delivery selectt">Street*: <input type="text"  name='street' /> </div> </p>
 	<div id="streetError" class="error">Street is required  </div> 
 <p><div class="delivery selectt">City*: <input type="text" name='city' /></div></p>
@@ -150,13 +153,14 @@ function delivTime()
 	<div id="numError1" class="error">Enter valid phone number (input contained spaces, symbols, or letters) </div>
 	<div id="numError2" class="error">Enter valid phone number (input was not 10 digits) </div> 
 	<div id="numError3" class="error">Enter valid phone number (input was not 10 digits and contained spaces, symbols, or letters) </div> 
+	<!--- validation/errors explained to user --->
 
 <div> 
 	<input type="radio"  name="p_or_d"  value = "pickup" checked="checked" />Pickup 
 	<input type="radio"  name="p_or_d" value = "delivery"/>Delivery
 </div>
 
-<div id=display></div>
+
 
 
 <table border="0" cellpadding="3">
@@ -180,23 +184,23 @@ function delivTime()
   document.writeln(s);
 
 
-$(document).ready(function()
+$(document).ready(function() //jquery that access the document
 {
-	delivery = false;
-	order = [0,0,0,0,0];
+	delivery = false; //whether or not the delivery button is checked
+	order = [0,0,0,0,0]; //array to contain each selected select value 
 	subtotal = 0;
 	tax = 0;
 	total = 0;
-	a = 0; 
+	a = 0; //the selected value x the price to give total for each ordered item 
 	b =0;
 	c = 0;
 	d = 0;
 	e = 0;
-  $("select[name=quan0]").change(function() 
+  $("select[name=quan0]").change(function() //gets the selected value from type select and the name given to each selector 
     {
-		order[0] = document.getElementsByName("quan0")[0].value;
-		a = order[0] * 4.50;
-		document.getElementsByName("cost")[0].value = (order[0] * 4.50).toFixed(2);
+		order[0] = document.getElementsByName("quan0")[0].value; //gets inputed value
+		a = order[0] * 4.50; //stores cost of amount of this item ordered for later calculations 
+		document.getElementsByName("cost")[0].value = (order[0] * 4.50).toFixed(2); //writes the calculated cost for this item in the "cost" text box 
 	});
   $("select[name=quan1]").change(function() 
     {
@@ -225,47 +229,47 @@ $(document).ready(function()
 	});
   $("select").change(function() 
     {
-    	subtotal = a + b + c + d + e;
+    	subtotal = a + b + c + d + e; //adds each ordered items total 
     		document.getElementsByName("subtotal")[0].value = subtotal.toFixed(2);
-    	tax = subtotal * 0.0625;
+    	tax = subtotal * 0.0625; //calculated tax
 			document.getElementsByName("tax")[0].value = tax.toFixed(2);
-		total = subtotal + tax;
-			document.getElementsByName("total")[0].value = total.toFixed(2);
+		total = subtotal + tax; //calculates total
+			document.getElementsByName("total")[0].value = total.toFixed(2); //into textbox
     });
 
 
 
-  $('input[type="radio"]').click(function() 
+  $('input[type="radio"]').click(function()  //makes things happen when radio buttons are clicked 
 	{
 		var inputValue = $(this).attr("value");
 		var targetBox = $("." + inputValue);
-		$(".selectt").not(targetBox).hide();
-		$(targetBox).show();
-		delivery = true;
+		$(".selectt").not(targetBox).hide(); //hides the address inputs when not on delivery
+		$(targetBox).show(); //shows adddress inputs when on delivery 
+		delivery = true; //since the pickup is preselected, the next radio button that would be selected is delivery, so it becomes true 
 	});
 
-  $('input[type="button"]').click(function()
+  $('input[type="button"]').click(function() //these things happen when button is clicked
   {
-  	count = 0;
+  	count = 0; //tallys when something needs to be validated, if things need to be validated it won't go to the new window/give order summary until inputs are fixed
   	
-	if(document.getElementsByName("lname")[0].value == "")
+	if(document.getElementsByName("lname")[0].value == "") //if no last name input gives error message
 	{
 		document.getElementById("nameError").style.display = "inline-block";
-		count++;
+		count++; 
 		
 	}
-	if(document.getElementsByName("phone")[0].value == "")
+	if(document.getElementsByName("phone")[0].value == "") //if no phone input gives error message
 	{
 		document.getElementById("phoneError").style.display = "inline-block";
 		count++;
 		
 	}
 	x = document.getElementsByName("phone")[0].value;
-	if(x != "")
+	if(x != "") //gives various error message for bad phone inputs 
 	{
-		if (isNumeric(x)==false)
+		if (isNumeric(x)==false) //not valid phone number if there are letters
 		{
-			if (x.length != 10)
+			if (x.length != 10) //not valid if not full 10 digit number 
 			{
 				document.getElementById("numError3").style.display = "inline-block";
 				count++;
@@ -277,7 +281,7 @@ $(document).ready(function()
 				count++;
 			}		
 		}
-		else if (x.length != 10)
+		else if (x.length != 10) 
 		{
 			document.getElementById("numError2").style.display = "inline-block";
 			count++;
@@ -285,29 +289,29 @@ $(document).ready(function()
 		}
 	}
 	if (order[0] == 0 && order[1] == 0 && order[2] == 0 && order[3] == 0 && order[4] == 0)
-	{
+	{ //error if no items selected to order 
 		document.getElementById("orderError").style.display = "inline-block";
 		count++;
 		
 	}
-	if(delivery)
+	if(delivery) //errors for when delivery option selected (errors with address input)
 	{
 		if(document.getElementsByName("street")[0].value == "")
-		{
+		{ //if no street value inputted
   			document.getElementById("streetError").style.display = "inline-block";
   			count++;
   			
 		}
 		if(delivery && document.getElementsByName("city")[0].value == "")
-		{
+		{ //if no city inputted
 			document.getElementById("cityError").style.display = "inline-block";
 			count++;
 
 		}
 	}
-	if (count == 0)
+	if (count == 0) //if no validation errors, button brings up orderr receipt/summary in new window
 	{
-		tab = window.open();
+		tab = window.open(); //opens into new window 
 		tab.document.write("Thank you for your order " +document.getElementsByName("fname")[0].value +" "+ document.getElementsByName("lname")[0].value +"!<br><br>");
 		tab.document.write("Order summary: <br>");
 		if(order[0] > 0) tab.document.write("Chicken Chop Suey: " + order[0] + "<br>");
@@ -320,7 +324,7 @@ $(document).ready(function()
 		t = myTime();
 		d = delivTime();
 		p = pickupTime();
-		if(delivery)
+		if(delivery) //calculates and displays when time to get food if delivered or pick up
 			{
 				tab.document.write("Your order was submitted: " + t);
 				tab.document.write("<br>Your order will be delivered to " + document.getElementsByName("street")[0].value + " in 30 minutes at: " + d);
@@ -344,6 +348,7 @@ $(document).ready(function()
 
 </table>
 <div id="orderError" class="error">Please order at least one item</div>
+<!-- div error for if there's no items selected -->
 <p>Subtotal: 
    $<input type="text"  name='subtotal' id="subtotal" />
 </p>
